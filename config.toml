@@ -1,0 +1,44 @@
+# Tari Wallet Benchmarks Configuration
+# All parameters per bounty specification
+
+# Single funding UTXO per mode (in microtari)
+a_fund = 10_000_000_000  # 10,000 tXTM
+
+# Confirmation depth before a UTXO is treated as spendable
+c_min = 3
+
+# Target UTXO count after S1 build-up
+volume_target = 512
+
+# Doubling rounds: 1 -> 2 -> 4 -> 8 -> 16 -> 32 -> 64 UTXOs
+doubling_rounds = 6
+
+# Fan-out: 64 txs x 8 outputs = 512 UTXOs
+fanout_outputs_per_tx = 8
+
+# Concurrent batch sizes for S4
+concurrent_batches = [8, 16, 32, 64, 128]
+
+# S4 time budget per batch (seconds)
+s4_t_budget_secs = 900
+
+# S5: total recipients for batch payment test
+s5_m = 100
+
+# S5: outputs per batch transaction
+s5_k = 10
+
+# Explicit fee rate (microtari per gram)
+fee_rate = 25
+
+# Base node gRPC endpoint
+base_node_grpc = "http://127.0.0.1:18142"
+
+# Old wallet binary path
+old_wallet_binary = "./bin/minotari_console_wallet"
+
+# New wallet binary path
+new_wallet_binary = "./bin/minotari-cli"
+
+# Wallet data directory (wiped between scan scenarios)
+data_dir = "./wallet-data"
