@@ -44,14 +44,21 @@ async fn main() -> anyhow::Result<()> {
     let mut harness = harness::BenchHarness::new(cfg).await?;
 
     let modes = match cli.mode.as_str() {
-        "old" => vec![modes::WalletMode::Old],
-        "new" => vec![modes::WalletMode::New],
+        "old"               => vec![modes::WalletMode::Old],
+        "new"               => vec![modes::WalletMode::New],
         "payment-processor" => vec![modes::WalletMode::PaymentProcessor],
-        _ => vec![
+        "all" => vec![
             modes::WalletMode::Old,
             modes::WalletMode::New,
             modes::WalletMode::PaymentProcessor,
         ],
+        unknown => {
+            eprintln!(
+                "ERROR: unknown mode {:?}. Valid options: old, new, payment-processor, all",
+                unknown
+            );
+            std::process::exit(1);
+        }
     };
 
     for mode in &modes {

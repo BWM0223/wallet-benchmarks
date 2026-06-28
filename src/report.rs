@@ -64,10 +64,15 @@ impl ResultProfile {
         let cpu = sys.cpus().first().map(|c| c.brand().to_string()).unwrap_or_default();
         let ram = sys.total_memory() as f64 / 1_073_741_824.0;
 
-        // Compute deltas
-        let b0 = scenarios.iter().find(|s| s.scenario == "B0");
-        let s2 = scenarios.iter().find(|s| s.scenario == "S2");
-        let s6 = scenarios.iter().find(|s| s.scenario == "S6");
+        // Compute deltas — use mode-specific lookups so multi-mode runs
+        // compare apples-to-apples. B0/S2/S6 come from the "new" mode
+        // (or whichever is first), S5 batch vs individual uses explicit modes.
+        let b0 = scenarios.iter().find(|s| s.scenario == "B0" && s.mode.contains("new"))
+            .or_else(|| scenarios.iter().find(|s| s.scenario == "B0"));
+        let s2 = scenarios.iter().find(|s| s.scenario == "S2" && s.mode.contains("new"))
+            .or_else(|| scenarios.iter().find(|s| s.scenario == "S2"));
+        let s6 = scenarios.iter().find(|s| s.scenario == "S6" && s.mode.contains("new"))
+            .or_else(|| scenarios.iter().find(|s| s.scenario == "S6"));
         let s5_batch = scenarios.iter().find(|s| s.scenario == "S5" && s.mode.contains("payment"));
         let s5_indiv = scenarios.iter().find(|s| s.scenario == "S5" && s.mode.contains("new"));
 

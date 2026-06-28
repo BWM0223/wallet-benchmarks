@@ -65,8 +65,16 @@ impl ScenarioMetrics {
             outputs_found: None,
             tx_metrics: Vec::new(),
             started_at: Utc::now(),
+            // completed_at is intentionally left as started_at here;
+            // call complete() when the scenario finishes so the duration
+            // is accurate rather than always reporting zero elapsed time.
             completed_at: Utc::now(),
         }
+    }
+
+    /// Mark this scenario as finished and record the real completion timestamp.
+    pub fn complete(&mut self) {
+        self.completed_at = Utc::now();
     }
 }
 

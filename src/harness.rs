@@ -28,7 +28,7 @@ impl BenchHarness {
 
         for scenario_id in scenarios_to_run {
             log::info!("  Running scenario {} for mode {:?}", scenario_id, mode);
-            let metrics = match scenario_id {
+            let mut metrics = match scenario_id {
                 "B0" => scenarios::b0_baseline_scan(&self.config, mode).await?,
                 "S0" => scenarios::s0_funding_baseline(&self.config, mode).await?,
                 "S1" => scenarios::s1_utxo_buildup(&self.config, mode).await?,
@@ -43,7 +43,9 @@ impl BenchHarness {
                     continue;
                 }
             };
+            metrics.complete();
             self.results.push(metrics);
+        }
         }
         Ok(())
     }
